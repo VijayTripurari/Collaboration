@@ -1,0 +1,8 @@
+1492689603125	Move 'index.jsp' to 'views'
+1492689657407	Move 'index.jsp' to 'WEB-INF'
+1492689732871	Move 'dispatcher-servlet.xml' to 'WEB-INF'
+1492689744674	Delete element
+1492689750127	Move 'web.xml' to 'WEB-INF'
+1492689763060	Move 'web-socket.xml' to 'WEB-INF'
+1492689766610	Move 'index.jsp' to 'views'
+1492756003653	Delete element

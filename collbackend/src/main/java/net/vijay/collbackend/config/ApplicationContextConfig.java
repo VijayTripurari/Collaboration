@@ -13,12 +13,12 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import net.vijay.collbackend.dao.UserDAO;
-import net.vijay.collbackend.dao.UserDAOImpl;
-import net.vijay.collbackend.model.User;
+import net.vijay.collbackend.dao.*;
+import net.vijay.collbackend.model.*;
 
 
-@ComponentScan(basePackages="{net.vijay.shoppingBackEnd}")
+
+@ComponentScan(basePackages="{net.vijay.collbackend}")
 @Configuration
 @EnableTransactionManagement
 public class ApplicationContextConfig {
@@ -40,7 +40,7 @@ public class ApplicationContextConfig {
 	private Properties getHibernateProperties()
 	{
 		Properties connectionProperties  =  new Properties();
-		connectionProperties.setProperty("hibernate.shoq_sql", "true");
+		connectionProperties.setProperty("hibernate.show_sql", "true");
 		connectionProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.Oracle10gDialect");
 		connectionProperties.setProperty("hibernate.format_sql", "true");
 		connectionProperties.setProperty("hibernate.hbm2ddl.auto", "update");
@@ -57,7 +57,9 @@ public class ApplicationContextConfig {
 	{
 		System.out.println("Session Factory Creation");
 		LocalSessionFactoryBuilder sessionBuilder =  new LocalSessionFactoryBuilder(dataSource);
+		
 		sessionBuilder.addProperties(getHibernateProperties());
+		sessionBuilder.scanPackages("net.vijay.collbackend");
 		sessionBuilder.addAnnotatedClass(User.class);
 		System.out.println("Before return stmt");
 		return sessionBuilder.buildSessionFactory();
@@ -66,6 +68,7 @@ public class ApplicationContextConfig {
 	@Autowired
 	@Bean(name = "transactionManager")
 	public HibernateTransactionManager getTransactionManager(SessionFactory sessionFactory) {
+		System.out.println(sessionFactory);
 		HibernateTransactionManager transactionManager = new HibernateTransactionManager(sessionFactory); 
 		
 																							// same
@@ -79,14 +82,14 @@ public class ApplicationContextConfig {
 		return transactionManager;
 	}
 
-	@Autowired
+	
 	@Bean(name = "user")
-	public User getUser() {
+public User getUser() {
 		return new User();
 	}
 
 	@Autowired
-	@Bean(name = "userDAO")
+@Bean(name = "userDAO")
 	public UserDAO getUserDAO(SessionFactory sessionFactory) {
 		return new UserDAOImpl(sessionFactory);
 	}

@@ -77,6 +77,38 @@ public class UserController {
 		return new ResponseEntity<User>(user,HttpStatus.OK);
 			}
 	
+	@RequestMapping(value="/getUser/{id}",method=RequestMethod.GET)
+	public ResponseEntity<User> getUser(@PathVariable int id){//,@RequestParam("image") MultipartFile file){
+		logger.debug("calling method getUser");
+		User user = new User();
+		if(userDAO.getUserById(id)!=null){
+		 user =	userDAO.getUserById(id);		
+		}
+		
+	//	logger.debug("user already exists with id:" + user.getUser_id());
+		user.setErrorMessage("user searched with id:" + user.getUser_id());
+		return new ResponseEntity<User>(user,HttpStatus.OK);
+	}
+	@RequestMapping(value="/user/authenticate/",method=RequestMethod.POST)
+	public ResponseEntity<User> authenticate(@RequestBody User user,HttpSession session){
+		logger.debug("calling method a uthenticate");	
+		user=userDAO.isValidUser(user.getEmail(),user.getPassword());	
+		System.out.println(" new user  " + user);
+		if(user==null){
+			user=new User();
+			user.setErrorMessage("Invalid Credentials.Please enter valid credentials");
+			return new ResponseEntity<User>(user,HttpStatus.UNAUTHORIZED);
+				}
+		else{
+			logger.debug("Valid credentials");
+			session.setAttribute("loggedInUser",user);
+			session.setAttribute("loggedInUserID",user.getUser_id());
+			//friendDAO.setOnline(user.getUser_id());
+			userDAO.setOnline(user.getUser_id());
+			}
+		return new ResponseEntity<User>(user,HttpStatus.OK);
+	}
+	
 	}
 
 

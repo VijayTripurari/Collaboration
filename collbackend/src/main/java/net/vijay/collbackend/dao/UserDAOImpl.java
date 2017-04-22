@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import net.vijay.collbackend.model.User;
 
-
+@Transactional
 @Repository("userDAO")
 public class UserDAOImpl implements UserDAO {
 	
@@ -105,10 +105,16 @@ public class UserDAOImpl implements UserDAO {
 		
 		if( (lst != null)   &&  (!lst.isEmpty())  )
 		{
+			System.out.println("list is not null"); 
 			return lst.get(0);
 		}
 		else
+		{
+			System.out.println("list is null"); 
+			
 		    return null;
+		    
+		}
 	}
 
 	public void setOnline(int userID) {

@@ -6,27 +6,26 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.stereotype.Component;
 
 @Entity
 @Table(name = "Users")
 public class User extends BaseDomain implements Serializable {
 	
+	private static final long  serialVersionUID = 123456789876L;
+	
 	//@GeneratedValue(generator=GenerationType.SEQUENCE)
 	
 	@Id
-	@GeneratedValue(generator="InvSeq") 
-    @SequenceGenerator(name="InvSeq",sequenceName="USERS_SEQ", allocationSize=1) 
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private int user_id;
 	@NotEmpty(message = "Please enter user name")
 	private String user_name;
 	@NotEmpty(message = "Please enter password")
 	private String password;
-	@NotEmpty(message = "Enter Confirm Password")
+	@NotEmpty(message = "Please enter confirm Password")
 	private String cPassword;
 	@NotEmpty(message = "Please Enter email")
 	private String email;
